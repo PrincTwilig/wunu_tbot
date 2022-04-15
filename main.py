@@ -22,11 +22,14 @@ def answer(text):
 
 @bot.message_handler(commands=['admin'])
 def adminka_check(message):
-    if int(message.chat.id) == 761711722 or int(message.chat.id) == 455033874 or int(message.chat.id) == 802040396:
-        bot.send_message(message.chat.id, 'Вітаю!')
-        adminka(message)
-    else:
-        bot.send_message(message.chat.id, 'Ви не адміністратор')
+    try:
+        if int(message.chat.id) == 761711722 or int(message.chat.id) == 455033874 or int(message.chat.id) == 802040396:
+            bot.send_message(message.chat.id, 'Вітаю!')
+            adminka(message)
+        else:
+            bot.send_message(message.chat.id, 'Ви не адміністратор')
+    except Exception as e:
+        bot.send_message(message.chat.id, "error:\n" + str(e))
 
 
 # запуск розвязку лаб5
@@ -42,11 +45,14 @@ def phys_lab5(message):
 
 # зберігати id;username користувачів
 def grab(message):
-    user = message.chat.username + ";" +  str(message.chat.id)
-    with open('users.txt', 'r') as f:
-        if user not in f.read():
-            with open('users.txt', 'a') as f:
-                f.write(user + ';')
+    try:
+        user = message.chat.username + ";" +  str(message.chat.id)
+        with open('users.txt', 'r') as f:
+            if user not in f.read():
+                with open('users.txt', 'a') as f:
+                    f.write(user + ';')
+    except Exception as e:
+        bot.send_message(message.chat.id, 'Щось пішло не так\n' + str(e))
 
 
 # реакція на відправку start
