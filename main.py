@@ -4,10 +4,13 @@ bot = telebot.TeleBot('2030518741:AAGIODEOhmrpWEhoZ9z8u4roDjhbLHrnyV8')
 from admin import *
 
 # відповіді на текстові повідомлення
-def answer(text):
-    text = text.lower()
+def answer(message):
+    text = message.text.lower()
     # physics ================================================================
-    if text == 'фізика лаб 1':
+    if text == 'фізика':
+        phys_markups(message)
+        return 'Да'
+    elif text == 'фізика лаб 1':
         return 'Фізика лаб 1: https://github.com/PrincTwilig/wunu_proj/releases/tag/Phys_lab1'
     elif text == 'фізика лаб 2':
         return 'Фізика лаб 2: https://github.com/PrincTwilig/wunu_proj/releases/tag/Phys_lab2'
@@ -18,7 +21,7 @@ def answer(text):
     # physics ================================================================
     # якщо написав назад, виключає markups
     else:
-        return 'не розумію'
+        return 'Команда не розпізнана, шось введено не так, спробуйте ще раз або перейдіть в /menu'
 
 @bot.message_handler(commands=['admin'])
 def adminka_check(message):
@@ -70,15 +73,24 @@ def start(m, res=False):
         bot.send_message(m.chat.id, "Помилка: " + str(e))
 
 # команда phys виводить список фізики
-@bot.message_handler(commands=["phys"])
-def buttons_phys(message):
+@bot.message_handler(commands=["menu"])
+def main_menu(message):
     try:
-        markup = telebot.types.ReplyKeyboardMarkup(True, False)
-        markup.row('Фізика лаб 1', 'Фізика лаб 2')
-        markup.row('Фізика лаб 4', 'Фізика лаб 5')
-        bot.send_message(message.chat.id, 'Вибери лабораторну роботу:', reply_markup=markup)
+        markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+        itembtn1 = telebot.types.KeyboardButton('Фізика')
+        markup.add(itembtn1)
+        bot.send_message(message.chat.id, 'Головне меню\nВключити меню вибору лабораторної з фізики, кнопка "Фізика" нижче', reply_markup=markup)
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
+
+def phys_markups(message):
+    markups = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    itembtn1 = telebot.types.KeyboardButton('Фізика лаб 1')
+    itembtn2 = telebot.types.KeyboardButton('Фізика лаб 2')
+    itembtn3 = telebot.types.KeyboardButton('Фізика лаб 4')
+    itembtn4 = telebot.types.KeyboardButton('Фізика лаб 5')
+    markups.add(itembtn1, itembtn2, itembtn3, itembtn4)
+    bot.send_message(message.chat.id, "Підсказки фізика", reply_markup=markups)
 
 # реакція на відправку тексту
 @bot.message_handler(content_types=["text"])
@@ -86,7 +98,7 @@ def handle_text(message):
     try:
         print(str(message.chat.id) + ";" + message.text)
         grab(message)
-        bot_answer = answer(message.text)
+        bot_answer = answer(message)
         bot.send_message(message.chat.id, bot_answer)
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
