@@ -11,7 +11,6 @@ def adminka(message):
     bot.register_next_step_handler(msg, admin_menu)
 
 def admin_menu(message):
-    # створюємо кнопки під повідомленням 1 скачати файл користувачів 2 відпарвити всім користувачам повідомлення
     try:
         if message.text == '1. Скачати файл користувачів':
             admin_download(message)
@@ -39,16 +38,13 @@ def admin_send_message(message):
         bot.reply_to(message, 'Помилка: ' + str(e))
 
 def admin_download(message):
-    # скачуємо файл користувачів
-    # вивести всіх користувачів з файлу users.txt
     try:
-        users = open('users.txt', 'r').read()
-        bot.send_message(message.chat.id, 'Користувачі:\n' + users)
-        bot.send_document(message.chat.id, open('users.txt', 'rb'))
-        adminka(message)
+        users = open('new_users.txt', 'r').read()
+        bot.send_message(message.chat.id, 'Нові користувачі:\n' + users)
+        bot.send_document(message.chat.id, open('new_users.txt', 'rb'))
     except Exception as e:
         bot.reply_to(message, 'Помилка: ' + str(e))
-        adminka(message)
+    adminka(message)
 
 def exit(message):
     # вихід з адмінки

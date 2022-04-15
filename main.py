@@ -29,7 +29,7 @@ def adminka_check(message):
         else:
             bot.send_message(message.chat.id, 'Ви не адміністратор')
     except Exception as e:
-        bot.send_message(message.chat.id, "error:\n" + str(e))
+        bot.send_message(message.chat.id, "Помилка: " + str(e))
 
 
 # запуск розвязку лаб5
@@ -41,50 +41,59 @@ def phys_lab5(message):
         msg = bot.send_message(message.chat.id, "Введіть цифру від -50 до 50")
         bot.register_next_step_handler(msg, handle_spisk) # запускає обробку данних в файлі phys_lab5.py
     except Exception as e:
-        bot.send_message(message.chat.id, 'Щось пішло не так')
+        bot.send_message(message.chat.id, "Помилка: " + str(e))
 
 # зберігати id;username користувачів
 def grab(message):
     try:
-        user = message.chat.username + ";" +  str(message.chat.id)
+        user = message.chat.username + ";" +  str(message.chat.id) + ";"
         with open('users.txt', 'r') as f:
             if user not in f.read():
                 with open('users.txt', 'a') as f:
-                    f.write(user + ';')
+                    f.write(user)
+        with open('new_users.txt', 'r') as f:
+            if user not in f.read():
+                with open('new_users.txt', 'a') as f:
+                    f.write(user)
+                    bot.send_message(761711722, user)
     except Exception as e:
-        bot.send_message(message.chat.id, 'Щось пішло не так\n' + str(e))
+        bot.send_message(message.chat.id, "Помилка: " + str(e))
 
 
 # реакція на відправку start
 @bot.message_handler(commands=["start"])
 def start(m, res=False):
-    bot.send_message(m.chat.id, 'Я на звязку. Напиши мені що-небудь')
-    grab(m)
+    try:
+        bot.send_message(m.chat.id, 'Я на звязку. Напиши мені що-небудь')
+        grab(m)
+    except Exception as e:
+        bot.send_message(m.chat.id, "Помилка: " + str(e))
 
 # команда phys виводить список фізики
 @bot.message_handler(commands=["phys"])
 def buttons_phys(message):
-    markup = telebot.types.ReplyKeyboardMarkup(True, False)
-    markup.row('Фізика лаб 1', 'Фізика лаб 2')
-    markup.row('Фізика лаб 4', 'Фізика лаб 5')
-    bot.send_message(message.chat.id, 'Вибери лабораторну роботу:', reply_markup=markup)
+    try:
+        markup = telebot.types.ReplyKeyboardMarkup(True, False)
+        markup.row('Фізика лаб 1', 'Фізика лаб 2')
+        markup.row('Фізика лаб 4', 'Фізика лаб 5')
+        bot.send_message(message.chat.id, 'Вибери лабораторну роботу:', reply_markup=markup)
+    except Exception as e:
+        bot.send_message(message.chat.id, "Помилка: " + str(e))
 
 # реакція на відправку тексту
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
-    print(str(message.chat.id) + ";" + message.text)
-    grab(message)
-    user = message.chat.username + "_" +  str(message.chat.id)
-    bot_answer = answer(message.text)
-    bot.send_message(message.chat.id, bot_answer)
-
-# реакція на відправку фото
-@bot.message_handler(content_types=["photo"])
-def handle_photo(message):
-    user = message.chat.username + "_" +  str(message.chat.id)
-    bot.send_message(message.chat.id, 'Супер! Я получив фото')
-
+    try:
+        print(str(message.chat.id) + ";" + message.text)
+        grab(message)
+        bot_answer = answer(message.text)
+        bot.send_message(message.chat.id, bot_answer)
+    except Exception as e:
+        bot.send_message(message.chat.id, "Помилка: " + str(e))
 
 
 # Запускаем бота
-bot.polling(none_stop=True, interval=0)
+try:
+    bot.polling(none_stop=True, interval=0)
+except Exception as e:
+    print("crashed")
