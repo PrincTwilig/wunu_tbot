@@ -52,7 +52,7 @@ def phys_lab5(message):
 # зберігати id;username користувачів
 def grab(message):
     try:
-        user = str(message.chat.username) + ";" +  str(message.chat.id) + ";"
+        user = message.chat.username + ";" +  str(message.chat.id) + ";"
         with open('new_users.txt', 'r') as f:
             with open('users.txt', 'r') as fa:
                 if (user not in f.read()) and (user not in fa.read()):
@@ -92,7 +92,7 @@ def main_menu(message):
         bot.send_message(message.chat.id, menu_text, reply_markup=markup)
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
-        print("crashed" + str(e))
+        print("crashed\n" + str(e))
 
 def phys_markups(message):
     markups = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
