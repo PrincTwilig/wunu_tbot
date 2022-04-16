@@ -92,7 +92,8 @@ def main_menu(message):
     try:
         markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
         itembtn1 = telebot.types.KeyboardButton('Фізика')
-        markup.add(itembtn1)
+        itembtn2 = telebot.types.KeyboardButton('Назад')
+        markup.add(itembtn1,itembtn2)
         menu_text = '     ⓂГоловне менюⓂ\n\n'
         menu_text += '🅿 Меню "Фізика"(кнопка замість клавіатури) - посилання на 1,2,4,5 лаб з фізики (/phys_lab5 - рішення 5 лаби з бота)\n\n\n'
         menu_text += '#⃣INFO#⃣\n\n'
