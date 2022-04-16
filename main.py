@@ -52,7 +52,7 @@ def phys_lab5(message):
 # зберігати id;username користувачів
 def grab(message):
     try:
-        user = message.chat.username + ";" +  str(message.chat.id) + ";"
+        user = str(message.chat.username) + ";" +  str(message.chat.id) + ";"
         with open('new_users.txt', 'r') as f:
             with open('users.txt', 'r') as fa:
                 if (user not in f.read()) and (user not in fa.read()):
@@ -105,7 +105,7 @@ def phys_markups(message):
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     try:
-        print(message.chat.username + ': ' + message.text)
+        print(str(message.chat.username) + ': ' + str(message.text))
         grab(message)
         bot_answer = answer(message)
         bot.send_message(message.chat.id, bot_answer)
