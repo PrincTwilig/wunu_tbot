@@ -1,7 +1,10 @@
+import logging
 import telebot
 from phys_lab5 import handle_spisk
 bot = telebot.TeleBot('2030518741:AAGIODEOhmrpWEhoZ9z8u4roDjhbLHrnyV8')
 from admin import *
+
+logging.level = logging.DEBUG
 
 # відповіді на текстові повідомлення
 def answer(message):
@@ -33,6 +36,7 @@ def adminka_check(message):
             bot.send_message(message.chat.id, 'Ви не адміністратор')
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
+        print("crashed" + str(e))
 
 
 # запуск розвязку лаб5
@@ -45,22 +49,28 @@ def phys_lab5(message):
         bot.register_next_step_handler(msg, handle_spisk) # запускає обробку данних в файлі phys_lab5.py
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
+        print("crashed" + str(e))
 
 # зберігати id;username користувачів
 def grab(message):
     try:
         user = message.chat.username + ";" +  str(message.chat.id) + ";"
+        with open('new_users.txt', 'r') as f:
+            with open('users.txt', 'r') as fa:
+                if (user not in f.read()) and (user not in fa.read()):
+                    with open('new_users.txt', 'a') as f:
+                        f.write(user)
+                        logging.debug(str(user) + " just enjoed!")
+                        print(str(user) + " just enjoed!")
+                        bot.send_message(761711722, str(user) + " just enjoed!")
         with open('users.txt', 'r') as f:
             if user not in f.read():
                 with open('users.txt', 'a') as f:
                     f.write(user)
-        with open('new_users.txt', 'r') as f:
-            if user not in f.read():
-                with open('new_users.txt', 'a') as f:
-                    f.write(user)
-                    bot.send_message(761711722, user)
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
+        print("crashed" + str(e))
+
 
 
 # реакція на відправку start
@@ -71,6 +81,7 @@ def start(m, res=False):
         grab(m)
     except Exception as e:
         bot.send_message(m.chat.id, "Помилка: " + str(e))
+        print("crashed" + str(e))
 
 # команда phys виводить список фізики
 @bot.message_handler(commands=["menu"])
@@ -82,6 +93,7 @@ def main_menu(message):
         bot.send_message(message.chat.id, 'Головне меню\nВключити меню вибору лабораторної з фізики, кнопка "Фізика" нижче', reply_markup=markup)
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
+        print("crashed" + str(e))
 
 def phys_markups(message):
     markups = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -96,16 +108,17 @@ def phys_markups(message):
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     try:
-        print(str(message.chat.id) + ";" + message.text)
+        print(message.chat.username + ': ' + message.text)
         grab(message)
         bot_answer = answer(message)
         bot.send_message(message.chat.id, bot_answer)
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
+        print("crashed" + str(e))
 
 
 # Запускаем бота
 try:
     bot.polling(none_stop=True, interval=0)
 except Exception as e:
-    print("crashed")
+    print("crashed" + str(e))

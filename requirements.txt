@@ -1,3 +1,4 @@
 pyTelegramBotAPI
 matplotlib
 prettytable
+logging

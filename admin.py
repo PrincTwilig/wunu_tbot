@@ -39,9 +39,12 @@ def admin_send_message(message):
 
 def admin_download(message):
     try:
-        users = open('new_users.txt', 'r').read()
-        bot.send_message(message.chat.id, 'Нові користувачі:\n' + users)
+        users = open('new_users.txt', 'r').read().split((';'))
         bot.send_document(message.chat.id, open('new_users.txt', 'rb'))
+        us = 0
+        for i in range(0,len(users),2):
+            us = us + 1
+            bot.send_message(message.chat.id, str(us)+'. '+users[i] + ',' + users[i+1] + '\n')
     except Exception as e:
         bot.reply_to(message, 'Помилка: ' + str(e))
     adminka(message)
