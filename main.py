@@ -18,7 +18,7 @@ def answer(message):
     elif text == 'фізика лаб 4':
         return 'Фізика лаб 4:\nДодатково:\n- pi = 3.1415\n- Ціна поділки секундоміра - 0.1 секунди\nФормули:\n- T1 = t1 / n1\n- dT1 = 0.05/n1 - дельта T1\n- g = 4pi^2 * ((h2-h1)/(T1^2 - T2^2))\n- g = 4pi^2 * ((h2-h1)/(T1сер^2 - T2сер^2)) - g середнє\n- dg = |gсер - g| - дельта g\n- E = dgсер / gсер\n\nGithub:\nhttps://github.com/PrincTwilig/wunu_proj/releases/tag/Phys_lab4'
     elif text == 'фізика лаб 5':
-        return 'Фізика лаб 5:\nФормули:\n- alfa = 2d\n- V = alfa*v\n- fF = sqrt(F)\n- m = (F/V^2)*d\n\nhttps://github.com/PrincTwilig/wunu_proj/releases/tag/Phys_lab5\n\nGithub:\nАбо онлайн версія: https://colab.research.google.com/drive/1Uh8d4jaEYUzE-UsZKI61fL04u3dogN5g?usp=sharing#scrollTo=MP-1SanzexLb\n\nАбо завантажити з проекту: /phys_lab5'
+        return 'Фізика лаб 5:\nФормули:\n- alfa = 2d\n- V = alfa*v\n- fF = sqrt(F)\n- m = (F/V^2)*d\n\nGithub:\nhttps://github.com/PrincTwilig/wunu_proj/releases/tag/Phys_lab5\n\nАбо онлайн версія: https://colab.research.google.com/drive/1Uh8d4jaEYUzE-UsZKI61fL04u3dogN5g?usp=sharing#scrollTo=MP-1SanzexLb\n\nАбо завантажити з проекту: /phys_lab5'
     # physics ================================================================
     # якщо написав назад, виключає markups
     elif text == 'назад':
