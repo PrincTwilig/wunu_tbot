@@ -24,8 +24,8 @@ def answer(message):
     elif text == 'назад':
         a = telebot.types.ReplyKeyboardRemove()
         bot.send_message(message.from_user.id, 'Все, немає дурацьких підсказок', reply_markup=a)
-    else:
-        return 'Команда не розпізнана, шось введено не так, спробуйте ще раз або перейдіть в /menu'
+        return 'Да, їх ріл нема'
+    return 'Команда не розпізнана, шось введено не так, спробуйте ще раз або перейдіть в /menu'
 
 @bot.message_handler(commands=['admin'])
 def adminka_check(message):
