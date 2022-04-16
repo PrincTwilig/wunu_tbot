@@ -27,18 +27,22 @@ def admin_menu(message):
 
 def admin_send_message(message):
     try:
+        if message.text == '3. Назад':
+            adminka(message)
+        print(str(message.chat.username) + ": Тільки що відправив повідомлення всім користувачам: " + message.text)
         users = open('users.txt', 'r').read().split((';'))
         users = list(filter(lambda x: x.isdigit(), users))
         for user in users:
             print(user + ' ' + message.text)
             bot.send_message(user, message.text)
         bot.send_message(message.chat.id, 'Повідомлення відправлено')
-        adminka(message)
     except Exception as e:
         bot.reply_to(message, 'Помилка: ' + str(e))
+    adminka(message)
 
 def admin_download(message):
     try:
+        print(str(message.chat.username) + ": Тільки що спробував скачати файл нових користувачів!")
         users = open('new_users.txt', 'r').read().split((';'))
         bot.send_document(message.chat.id, open('new_users.txt', 'rb'))
         us = 0

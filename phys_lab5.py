@@ -173,6 +173,7 @@ def handle_spisk(message):
         return 0
     bot.send_message(message.chat.id, 'Ви ввели коректне значення')
     spisk = int(message.text)
+    print(str(message.chat.username) + ": Тільки що скачав лабу 5 варіант: "+ str(spisk))
     table = Solution(spisk,message)
 
     table.normalize()  # Переводимо значення під варіант
