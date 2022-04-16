@@ -5,7 +5,7 @@ def adminka(message):
     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
     itembtn1 = telebot.types.KeyboardButton('1. Скачати файл користувачів')
     itembtn2 = telebot.types.KeyboardButton('2. Відправити повідомлення всім користувачам')
-    itembtn3 = telebot.types.KeyboardButton('3. Назад')
+    itembtn3 = telebot.types.KeyboardButton('Назад')
     markup.add(itembtn1, itembtn2, itembtn3)
     msg = bot.send_message(message.chat.id, 'Виберіть дію:', reply_markup=markup)
     bot.register_next_step_handler(msg, admin_menu)
@@ -17,7 +17,7 @@ def admin_menu(message):
         elif message.text == '2. Відправити повідомлення всім користувачам':
             msg = bot.reply_to(message, 'Введіть повідомлення:')
             bot.register_next_step_handler(msg, admin_send_message)
-        elif message.text == '3. Назад':
+        elif message.text == 'Назад':
             exit(message)
         else:
             bot.send_message(message.chat.id, 'Невірна команда')
@@ -27,7 +27,7 @@ def admin_menu(message):
 
 def admin_send_message(message):
     try:
-        if message.text == '3. Назад':
+        if message.text == 'Назад':
             adminka(message)
         print(str(message.chat.username) + ": Тільки що відправив повідомлення всім користувачам: " + message.text)
         users = open('users.txt', 'r').read().split((';'))
