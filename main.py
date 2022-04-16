@@ -1,10 +1,8 @@
-import logging
 import telebot
 from phys_lab5 import handle_spisk
 bot = telebot.TeleBot('2030518741:AAGIODEOhmrpWEhoZ9z8u4roDjhbLHrnyV8')
 from admin import *
 
-logging.level = logging.DEBUG
 
 # відповіді на текстові повідомлення
 def answer(message):
@@ -60,7 +58,6 @@ def grab(message):
                 if (user not in f.read()) and (user not in fa.read()):
                     with open('new_users.txt', 'a') as f:
                         f.write(user)
-                        logging.debug(str(user) + " just enjoed!")
                         print(str(user) + " just enjoed!")
                         bot.send_message(761711722, str(user) + " just enjoed!")
         with open('users.txt', 'r') as f:
