@@ -42,7 +42,7 @@ def adminka_check(message):
 def phys_lab5(message):
     try:
         bot.send_message(message.chat.id, 'Version: 1.0\n')
-        bot.send_message(message.chat.id, 'Введіть додатній номер списку щоб додати відсоток, та відємний щоб відняти відсоток від данних(якщо ви перший в списку, то впишіть 0)')
+        bot.send_message(message.chat.id, 'Якщо ви хочете додати або відняти відсоткове значення до данних, які задає викладач, то введіть свій порядковий номер у списку вашої групи. \nНаприклад, ваш номер у списку рівний 15.\nВводите 15. До даних  додасться 15%. \nЯкщо потрібно відняти від даних відсотки, то ставите перед вашим числом знак мінус.\nВводите - 15, від даних віднімиться 15%.')
         msg = bot.send_message(message.chat.id, "Введіть цифру від -50 до 50")
         bot.register_next_step_handler(msg, handle_spisk) # запускає обробку данних в файлі phys_lab5.py
     except Exception as e:
