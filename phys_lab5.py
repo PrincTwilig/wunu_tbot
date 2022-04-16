@@ -164,9 +164,11 @@ def handle_spisk(message):
     if not message.text.isdigit():
         bot.send_message(message.chat.id, 'Ви ввели не коректне значення')
         bot.send_message(message.chat.id, "Введіть цифру від -50 до 50\nСпробуйте ще раз /phys_lab5")
+        return 0
     if not int(message.text) <= 50 or not int(message.text) >= -50:
         bot.send_message(message.chat.id, 'Ви ввели не коректне значення')
         bot.send_message(message.chat.id, "Введіть цифру від -50 до 50\nСпробуйте ще раз /phys_lab5")
+        return 0
     bot.send_message(message.chat.id, 'Ви ввели коректне значення')
     spisk = int(message.text)
     print(str(message.chat.username) + ": Тільки що скачав лабу 5 варіант: "+ str(spisk))
