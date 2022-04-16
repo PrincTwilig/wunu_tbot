@@ -52,7 +52,10 @@ def phys_lab5(message):
 # зберігати id;username користувачів
 def grab(message):
     try:
-        user = message.chat.username + ";" +  str(message.chat.id) + ";"
+        if message.chat.username == None:
+            user = str(message.chat.username) + ";" +  str(message.chat.id) + ";"
+        else:
+            user = message.chat.username + ";" +  str(message.chat.id) + ";"
         with open('new_users.txt', 'r') as f:
             with open('users.txt', 'r') as fa:
                 if (user not in f.read()) and (user not in fa.read()):
@@ -87,10 +90,8 @@ def main_menu(message):
         markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
         itembtn1 = telebot.types.KeyboardButton('Фізика')
         markup.add(itembtn1)
-        gthb = '[Github](https://github.com/PrincTwilig/wunu_proj)'
-        mono = '[4441 1144 2080 6695](https://send.monobank.ua/42VwSWkXn9)'
         menu_text = '     ⓂГоловне менюⓂ\n\n'
-        menu_text += '🅿 Меню "Фізика"(кнопка замість клавіатури) - посилання на 1,2,4,5 лаб з фізики (/phys_lab5 - рішення 5 лаби з бота)\n\n'
+        menu_text += '🅿 Меню "Фізика"(кнопка замість клавіатури) - посилання на 1,2,4,5 лаб з фізики (/phys_lab5 - рішення 5 лаби з бота)\n\n\n'
         menu_text += '🐈‍⬛ Github - посилання на гітхаб основної частини проекту\nhttps://github.com/PrincTwilig/wunu_proj\n\n'
         menu_text += '📈 Хто хоче підтримати цей проект, може відплатити своїм тілом, або по скучному на карту 4441 1144 2080 6695 Владислав М.\nhttps://send.monobank.ua/42VwSWkXn9\n\n'
         menu_text += '⛔ Всі ці проекти зроблені лише для ознайомлення з формулами і тим як працюють програми для рішення задач з фізики. За точність/правильність їх роботи я не ручаюсь.\n\n'
