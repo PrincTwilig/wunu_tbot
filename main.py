@@ -87,7 +87,7 @@ def main_menu(message):
         markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
         itembtn1 = telebot.types.KeyboardButton('Фізика')
         markup.add(itembtn1)
-        menu_text =  'ⓂГоловне менюⓂ\n'
+        menu_text = ' ⓂГоловне менюⓂ\n'
         menu_text += '🅿Меню "Фізика" - посилання на 1,2,4,5 лаб з фізики (/phys_lab5 - рішення 5 лаби з бота)\n'
         bot.send_message(message.chat.id, menu_text, reply_markup=markup)
     except Exception as e:
