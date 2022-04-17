@@ -3,7 +3,6 @@ from phys_lab5 import handle_spisk
 bot = telebot.TeleBot('2030518741:AAGIODEOhmrpWEhoZ9z8u4roDjhbLHrnyV8')
 from admin import *
 
-
 # відповіді на текстові повідомлення
 def answer(message):
     text = message.text.lower()
@@ -120,14 +119,19 @@ def phys_markups(message):
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     try:
-        print(str(message.chat.username) + ': ' + str(message.text))
-        grab(message)
-        bot_answer = answer(message)
-        bot.send_message(message.chat.id, bot_answer, disable_web_page_preview=True)
+        user_private_talk = user_id_back()
+        admin_private_talk = admin_id_back()
+        if (user_private_talk != None) and (str(message.chat.id) == str(user_private_talk)):
+            print(str(message.chat.username) + ": Тільки що відправив повідомлення адміну " + admin_private_talk + ": " + message.text)
+            bot.send_message(admin_private_talk, str(message.chat.username)+': '+message.text)
+        else:
+            print(str(message.chat.username) + ': ' + str(message.text))
+            grab(message)
+            bot_answer = answer(message)
+            bot.send_message(message.chat.id, bot_answer, disable_web_page_preview=True)
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
         print("crashed" + str(e))
-
 
 # Запускаем бота
 try:
