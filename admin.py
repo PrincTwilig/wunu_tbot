@@ -71,8 +71,11 @@ def admin_send_message(message):
         users = open('users.txt', 'r').read().split((';'))
         users = list(filter(lambda x: x.isdigit(), users))
         for user in users:
-            print(user + ' ' + message.text)
-            bot.send_message(user, message.text)
+            try:
+                print(user + ' ' + message.text)
+                bot.send_message(user, message.text)
+            except Exception as e:
+                print(user + " blocked, Errore\n" + e)
         bot.send_message(message.chat.id, 'Повідомлення відправлено')
     except Exception as e:
         bot.reply_to(message, 'Помилка: ' + str(e))

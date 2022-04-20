@@ -1,6 +1,5 @@
 pyTelegramBotAPI
 matplotlib
 prettytable
-os
 datetime
 zipfile36
