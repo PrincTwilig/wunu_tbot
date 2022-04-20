@@ -149,6 +149,7 @@ class Solution:
         text += "\nВідносна похибка E: " + str(round((self.delta_V[5] / self.V[5]) * 100, 5)) + "%\n"
         with open("phys5t.txt", "w") as f:
             f.write(text)
+            f.close()
         # send file phys5t.txt
         bot.send_document(self.message.chat.id, open("phys5t.txt", "rb"))
 

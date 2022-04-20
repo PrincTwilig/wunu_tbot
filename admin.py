@@ -1,4 +1,6 @@
+import zipfile as ZipFile
 import telebot
+import os
 bot = telebot.TeleBot('2030518741:AAGIODEOhmrpWEhoZ9z8u4roDjhbLHrnyV8')
 
 user_private_talk = ''
@@ -9,8 +11,9 @@ def adminka(message):
     itembtn1 = telebot.types.KeyboardButton('1. Скачати файл користувачів')
     itembtn2 = telebot.types.KeyboardButton('2. Відправити повідомлення всім користувачам')
     itembtn3 = telebot.types.KeyboardButton('3. Говорити з користувачем по id')
-    itembtn4 = telebot.types.KeyboardButton('Назад')
-    markup.add(itembtn1, itembtn2, itembtn3, itembtn4)
+    itembtn4 = telebot.types.KeyboardButton('4. Скачати лог чатів користувачів')
+    itembtn5 = telebot.types.KeyboardButton('Назад')
+    markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5)
     msg = bot.send_message(message.chat.id, 'Виберіть дію:', reply_markup=markup)
     bot.register_next_step_handler(msg, admin_menu)
 
@@ -24,6 +27,8 @@ def admin_menu(message):
         elif message.text == '3. Говорити з користувачем по id':
             msg = bot.reply_to(message, 'Введіть id користувача, щоб закінчити приватний чат, нажміть "Назад":')
             bot.register_next_step_handler(msg, admin_talk_with_user)
+        elif message.text == '4. Скачати лог чатів користувачів':
+            admin_download_chats(message)
         elif message.text == 'Назад':
             exit(message)
         else:
@@ -85,6 +90,19 @@ def admin_download(message):
     except Exception as e:
         bot.reply_to(message, 'Помилка: ' + str(e))
     adminka(message)
+
+def admin_download_chats(message):
+    try:
+        if os.path.exists('users'):
+            zfname = 'users.zip'
+            with ZipFile.ZipFile(zfname, "w") as nz:
+                nz.write('users')
+            bot.send_document(message.chat.id, open('users.zip', 'r'))
+    except Exception as e:
+        print(e)
+        bot.send_message(message.chat.id, e)
+    adminka(message)
+
 
 def exit(message):
     # вихід з адмінки

@@ -1,7 +1,14 @@
 import telebot
+import os
+import datetime
 from phys_lab5 import handle_spisk
+from phys_lab8 import handle_spisk_lab8
 bot = telebot.TeleBot('2030518741:AAGIODEOhmrpWEhoZ9z8u4roDjhbLHrnyV8')
 from admin import *
+
+# time = h, m, s
+time = datetime.datetime.now().strftime('%H:%M:%S')
+day = datetime.datetime.now().strftime('%d.%m.%Y')
 
 # відповіді на текстові повідомлення
 def answer(message):
@@ -51,6 +58,17 @@ def phys_lab5(message):
         bot.send_message(message.chat.id, "Помилка: " + str(e))
         print("crashed" + str(e))
 
+@bot.message_handler(commands=['phys_lab8'])
+def phys_lab5(message):
+    try:
+        bot.send_message(message.chat.id, 'Version: 1.0\n')
+        bot.send_message(message.chat.id, 'Якщо ви хочете додати або відняти відсоткове значення до данних, які задає викладач, то введіть свій порядковий номер у списку вашої групи. \nНаприклад, ваш номер у списку рівний 15.\nВводите 15. До даних  додасться 15%. \nЯкщо потрібно відняти від даних відсотки, то ставите перед вашим числом знак мінус.\nВводите - 15, від даних віднімиться 15%.')
+        msg = bot.send_message(message.chat.id, "Введіть цифру від -50 до 50")
+        bot.register_next_step_handler(msg, handle_spisk_lab8) # запускає обробку данних в файлі phys_lab5.py
+    except Exception as e:
+        bot.send_message(message.chat.id, "Помилка: " + str(e))
+        print("crashed" + str(e))
+
 # зберігати id;username користувачів
 def grab(message):
     try:
@@ -72,6 +90,19 @@ def grab(message):
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
         print("crashed" + str(e))
+
+def store_users_info(message):
+    try:
+        global day, time
+        if not os.path.exists("users"):
+            os.mkdir("users")
+        if not os.path.exists("users/" + str(message.chat.username) + '_' + str(message.chat.id)):
+            os.mkdir("users/" + str(message.chat.username) + '_' + str(message.chat.id))
+        with open("users/" + str(message.chat.username) + '_' + str(message.chat.id) + '/' + str(day) + '.txt', "a") as f:
+            f.write(str(time) + ';' + str(message.chat.username) + '_' + str(message.chat.id) + ': ' + str(message.text) + '\n')
+    except Exception as e:
+        print(e)
+        bot.send_message(message.chat.id, str(e))
 
 
 
@@ -119,6 +150,10 @@ def phys_markups(message):
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     try:
+        global time,day
+        time = datetime.datetime.now().strftime('%H:%M:%S')
+        day = datetime.datetime.now().strftime('%d.%m.%Y')
+        store_users_info(message)
         user_private_talk = user_id_back()
         admin_private_talk = admin_id_back()
         if (user_private_talk != None) and (str(message.chat.id) == str(user_private_talk)):
