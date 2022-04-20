@@ -84,8 +84,8 @@ def admin_send_message(message):
 def admin_download(message):
     try:
         print(str(message.chat.username) + ": Тільки що спробував скачати файл нових користувачів!")
-        users = open('new_users.txt', 'r').read().split((';'))
-        bot.send_document(message.chat.id, open('new_users.txt', 'rb'))
+        users = open('users/new_users.txt', 'r').read().split((';'))
+        bot.send_document(message.chat.id, open('users/new_users.txt', 'rb'))
         us = 0
         for i in range(0,len(users),2):
             us = us + 1
@@ -97,10 +97,17 @@ def admin_download(message):
 def admin_download_chats(message):
     try:
         if os.path.exists('users'):
-            zfname = 'users.zip'
-            with ZipFile.ZipFile(zfname, "w") as nz:
-                nz.write('users')
-            bot.send_document(message.chat.id, open('users.zip', 'r'))
+            # open zip file
+            zip = ZipFile.ZipFile("users.zip", 'w')
+            # walk through the folder
+            for root, dirs, files in os.walk("users"):
+                for file in files:
+                    zip.write(os.path.join(root, file))
+            zip.close()
+            # send users.zip
+            bot.send_document(message.chat.id, open('users.zip', 'rb'))
+        else:
+            bot.send_message(message.chat.id, "No one send anything(")
     except Exception as e:
         print(e)
         bot.send_message(message.chat.id, str(e))

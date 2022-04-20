@@ -3,3 +3,6 @@ matplotlib
 prettytable
 datetime
 zipfile36
+schedule
+time
+threading

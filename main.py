@@ -1,5 +1,9 @@
-import telebot
 import os
+
+import telebot
+import schedule
+import time as tm
+from threading import Thread
 import datetime
 from phys_lab5 import handle_spisk
 from phys_lab8 import handle_spisk_lab8
@@ -52,6 +56,7 @@ def adminka_check(message):
 @bot.message_handler(commands=['phys_lab5'])
 def phys_lab5(message):
     try:
+        store_users_info(message)
         bot.send_message(message.chat.id, 'Version: 1.0\n')
         bot.send_message(message.chat.id, 'Якщо ви хочете додати або відняти відсоткове значення до данних, які задає викладач, то введіть свій порядковий номер у списку вашої групи. \nНаприклад, ваш номер у списку рівний 15.\nВводите 15. До даних  додасться 15%. \nЯкщо потрібно відняти від даних відсотки, то ставите перед вашим числом знак мінус.\nВводите - 15, від даних віднімиться 15%.')
         msg = bot.send_message(message.chat.id, "Введіть цифру від -50 до 50")
@@ -63,6 +68,7 @@ def phys_lab5(message):
 @bot.message_handler(commands=['phys_lab8'])
 def phys_lab5(message):
     try:
+        store_users_info(message)
         bot.send_message(message.chat.id, 'Version: 1.0\n')
         bot.send_message(message.chat.id, 'Якщо ви хочете додати або відняти відсоткове значення до данних, які задає викладач, то введіть свій порядковий номер у списку вашої групи. \nНаприклад, ваш номер у списку рівний 15.\nВводите 15. До даних  додасться 15%. \nЯкщо потрібно відняти від даних відсотки, то ставите перед вашим числом знак мінус.\nВводите - 15, від даних віднімиться 15%.')
         msg = bot.send_message(message.chat.id, "Введіть цифру від -50 до 50")
@@ -74,20 +80,17 @@ def phys_lab5(message):
 # зберігати id;username користувачів
 def grab(message):
     try:
-        if message.chat.username == None:
-            user = str(message.chat.username) + ";" +  str(message.chat.id) + ";"
-        else:
-            user = message.chat.username + ";" +  str(message.chat.id) + ";"
-        with open('new_users.txt', 'r') as f:
-            with open('users.txt', 'r') as fa:
+        user = str(message.chat.username) + ";" +  str(message.chat.id) + ";"
+        with open('users/new_users.txt', 'r') as f:
+            with open('users/users.txt', 'r') as fa:
                 if (user not in f.read()) and (user not in fa.read()):
-                    with open('new_users.txt', 'a') as f:
+                    with open('users/new_users.txt', 'a') as f:
                         f.write(user)
                         print(str(user) + " just enjoed!")
                         bot.send_message(761711722, str(user) + " just enjoed!")
-        with open('users.txt', 'r') as f:
+        with open('users/users.txt', 'r') as f:
             if user not in f.read():
-                with open('users.txt', 'a') as f:
+                with open('users/users.txt', 'a') as f:
                     f.write(user)
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
@@ -103,8 +106,7 @@ def store_users_info(message):
         with open("users/" + str(message.chat.username) + '_' + str(message.chat.id) + '/' + str(day) + '.txt', "a") as f:
             f.write(str(time) + ';' + str(message.chat.username) + '_' + str(message.chat.id) + ': ' + str(message.text) + '\n')
     except Exception as e:
-        print(e)
-        bot.send_message(message.chat.id, str(e))
+        print(message.chat.id + ';' + str(e))
 
 
 
@@ -122,6 +124,7 @@ def start(m, res=False):
 @bot.message_handler(commands=["menu"])
 def main_menu(message):
     try:
+        store_users_info(message)
         markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
         itembtn1 = telebot.types.KeyboardButton('Фізика')
         itembtn2 = telebot.types.KeyboardButton('Назад')
@@ -153,9 +156,6 @@ def phys_markups(message):
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     try:
-        global time,day
-        time = datetime.datetime.now().strftime('%H:%M:%S')
-        day = datetime.datetime.now().strftime('%d.%m.%Y')
         store_users_info(message)
         user_private_talk = user_id_back()
         admin_private_talk = admin_id_back()
@@ -170,6 +170,51 @@ def handle_text(message):
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
         print("crashed" + str(e))
+
+def every_day_send():
+    try:
+        if os.path.exists('users'):
+            # open zip file
+            zip = ZipFile.ZipFile("users.zip", 'w')
+            # walk through the folder
+            for root, dirs, files in os.walk("users"):
+                for file in files:
+                    zip.write(os.path.join(root, file))
+            zip.close()
+            # send users.zip
+            bot.send_document(761711722, open('users.zip', 'rb'))
+        else:
+            bot.send_message(761711722, "No one send anything(")
+    except Exception as e:
+        print('Cant send(\n' + str(e))
+
+def shedl_check():
+    while True:
+        global time, day
+
+        time = datetime.datetime.now().strftime('%H:%M:%S')
+        day = datetime.datetime.now().strftime('%d.%m.%Y')
+
+        schedule.run_pending()
+
+        tm.sleep(1)
+
+
+Thread(target=shedl_check).start()
+
+schedule.every().day.at("22:00").do(every_day_send)
+
+
+if not os.path.exists('users'):
+    os.mkdir('users')
+if not os.path.exists('users/new_users.txt'):
+    open('users/new_users.txt', 'a').close()
+if not os.path.exists('users/users.txt'):
+    open('users/users.txt', 'a').close()
+if not os.path.exists('phys_lab5'):
+    os.mkdir('phys_lab5')
+if not os.path.exists('phys_lab8'):
+    os.mkdir('phys_lab8')
 
 # Запускаем бота
 try:

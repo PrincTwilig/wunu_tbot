@@ -81,7 +81,7 @@ class Solution:
 
     # print table
     def print_table(self):
-        f = open("phys_lab8_" + str(self.n) + ".txt", 'w')
+        f = open("phys_lab8/phys_lab8_" + str(self.n) + ".txt", 'w')
         table = PrettyTable()
         table.field_names = ["No", "U", "I", "l", "d", "p"]
         for i in range(4):
@@ -91,7 +91,7 @@ class Solution:
         text += "\nАбсолютна похибка V: " + str(self.p[3]) + " +- " + str(self.delta_p[3]) + "\nВідносна похибка E: " + str(round((self.delta_p[3]/self.p[3])*100,5)) + "%\n"
         f.write(text)
         f.close()
-        bot.send_document(self.message.chat.id, open("phys_lab8_" + str(self.n) + ".txt", 'r'))
+        bot.send_document(self.message.chat.id, open("phys_lab8/phys_lab8_" + str(self.n) + ".txt", 'r'))
 
 
 

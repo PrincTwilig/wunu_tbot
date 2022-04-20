@@ -147,17 +147,17 @@ class Solution:
         text += "\nМаса одиниці довжини струни m = (F/V^2)*d: " + str(self.m)
         text += "\nАбсолютна похибка V: " + str(self.V[5]) + " +- " + str(self.delta_V[5])
         text += "\nВідносна похибка E: " + str(round((self.delta_V[5] / self.V[5]) * 100, 5)) + "%\n"
-        with open("phys5t.txt", "w") as f:
+        with open("phys_lab5/phys5t.txt", "w") as f:
             f.write(text)
             f.close()
         # send file phys5t.txt
-        bot.send_document(self.message.chat.id, open("phys5t.txt", "rb"))
+        bot.send_document(self.message.chat.id, open("phys_lab5/phys5t.txt", "rb"))
 
     # show graph
     def show_graph(self):
-        plt.savefig("phys5g.png")
+        plt.savefig("phys_lab5/phys5g.png")
         #send image
-        bot.send_photo(self.message.chat.id, open("phys5g.png", "rb"))
+        bot.send_photo(self.message.chat.id, open("phys_lab5/phys5g.png", "rb"))
         plt.close()
 
 def handle_spisk(message):
