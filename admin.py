@@ -72,10 +72,10 @@ def admin_send_message(message):
         users = list(filter(lambda x: x.isdigit(), users))
         for user in users:
             try:
-                print(user + ' ' + message.text)
+                print(str(user) + ' ' + message.text)
                 bot.send_message(user, message.text)
             except Exception as e:
-                print(user + " blocked, Errore\n" + e)
+                print(str(user) + " blocked, Errore\n" + str(e))
         bot.send_message(message.chat.id, 'Повідомлення відправлено')
     except Exception as e:
         bot.reply_to(message, 'Помилка: ' + str(e))
@@ -103,7 +103,7 @@ def admin_download_chats(message):
             bot.send_document(message.chat.id, open('users.zip', 'r'))
     except Exception as e:
         print(e)
-        bot.send_message(message.chat.id, e)
+        bot.send_message(message.chat.id, str(e))
     adminka(message)
 
 
