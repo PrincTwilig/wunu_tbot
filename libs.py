@@ -1,5 +1,6 @@
 import os
 import telebot
+from PIL import Image
 import random
 import schedule
 import time as tm

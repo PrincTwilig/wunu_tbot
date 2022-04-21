@@ -1,3 +1,5 @@
+import os
+
 from libs import *
 from phys_lab5 import handle_spisk
 from phys_lab8 import handle_spisk_lab8
@@ -222,6 +224,8 @@ if not os.path.exists('phys_lab5'):
     os.mkdir('phys_lab5')
 if not os.path.exists('phys_lab8'):
     os.mkdir('phys_lab8')
+if not os.path.exists('pdf_con'):
+    os.mkdir('pdf_con')
 
 while True:
     try:

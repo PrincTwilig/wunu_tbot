@@ -4,3 +4,4 @@ prettytable
 datetime
 zipfile36
 schedule
+Pillow
