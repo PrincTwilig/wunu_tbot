@@ -1,0 +1,6 @@
+17:01:17;Kamizu_Michael_560540686: /menu
+17:01:34;Kamizu_Michael_560540686: 8
+17:02:02;Kamizu_Michael_560540686: /menu
+17:02:05;Kamizu_Michael_560540686: Фізика
+17:02:08;Kamizu_Michael_560540686: Фізика лаб 8
+17:02:14;Kamizu_Michael_560540686: /phys_lab8

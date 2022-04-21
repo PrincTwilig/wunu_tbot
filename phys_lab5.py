@@ -1,7 +1,4 @@
-import telebot
-from prettytable import PrettyTable
-import matplotlib.pyplot as plt
-bot = telebot.TeleBot('2030518741:AAGIODEOhmrpWEhoZ9z8u4roDjhbLHrnyV8')
+from libs import *
 
 class Solution:
 

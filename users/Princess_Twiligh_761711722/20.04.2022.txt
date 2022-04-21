@@ -26,3 +26,40 @@
 13:23:37;Princess_Twiligh_761711722: /phys_lab8
 13:23:46;Princess_Twiligh_761711722: �����
 13:25:03;Princess_Twiligh_761711722: �����
+10:35:26;Princess_Twiligh_761711722: s
+10:35:26;Princess_Twiligh_761711722: s
+10:35:28;Princess_Twiligh_761711722: /menu
+10:35:30;Princess_Twiligh_761711722: Фізика
+10:35:31;Princess_Twiligh_761711722: Фізика лаб 5
+10:35:32;Princess_Twiligh_761711722: /phys_lab5
+10:35:36;Princess_Twiligh_761711722: Фізика лаб 8
+10:35:37;Princess_Twiligh_761711722: /phys_lab8
+10:35:41;Princess_Twiligh_761711722: Назад
+10:35:59;Princess_Twiligh_761711722: Назад
+12:03:22;Princess_Twiligh_761711722: Назад
+13:29:33;Princess_Twiligh_761711722: Назад
+13:30:57;Princess_Twiligh_761711722: Назад
+16:04:15;Princess_Twiligh_761711722: Назад
+16:06:54;Princess_Twiligh_761711722: Назад
+16:19:08;Princess_Twiligh_761711722: Назад
+16:34:32;Princess_Twiligh_761711722: /menu
+16:34:50;Princess_Twiligh_761711722: Фізика
+16:35:00;Princess_Twiligh_761711722: Фізика лаб 5
+16:35:03;Princess_Twiligh_761711722: /phys_lab5
+16:35:11;Princess_Twiligh_761711722: Назад
+16:41:01;Princess_Twiligh_761711722: /menu
+16:41:18;Princess_Twiligh_761711722: Назад
+16:59:53;Princess_Twiligh_761711722: m
+17:02:09;Princess_Twiligh_761711722: Назад
+17:49:30;Princess_Twiligh_761711722: /menu
+17:52:38;Princess_Twiligh_761711722: /menu
+17:52:49;Princess_Twiligh_761711722: Фізика
+17:52:52;Princess_Twiligh_761711722: Фізика лаб 5
+17:53:01;Princess_Twiligh_761711722: /phys_lab5
+17:53:09;Princess_Twiligh_761711722: Назад
+17:53:13;Princess_Twiligh_761711722: /menu
+17:55:00;Princess_Twiligh_761711722: Назад
+17:55:09;Princess_Twiligh_761711722: 4. Скачати лог чатів користувачів
+17:55:45;Princess_Twiligh_761711722: Назад
+19:29:53;Princess_Twiligh_761711722: Назад
+19:30:04;Princess_Twiligh_761711722: Назад

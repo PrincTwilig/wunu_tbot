@@ -1,6 +1,6 @@
-import telebot
-bot = telebot.TeleBot('2030518741:AAGIODEOhmrpWEhoZ9z8u4roDjhbLHrnyV8')
-from prettytable import PrettyTable
+from libs import *
+
+
 
 
 class Solution:

@@ -1,13 +1,7 @@
-import os
-
-import telebot
-import schedule
-import time as tm
-from threading import Thread
-import datetime
+from libs import *
 from phys_lab5 import handle_spisk
 from phys_lab8 import handle_spisk_lab8
-bot = telebot.TeleBot('2030518741:AAGIODEOhmrpWEhoZ9z8u4roDjhbLHrnyV8')
+from inst import inst_in
 from admin import *
 
 # time = h, m, s
@@ -51,12 +45,21 @@ def adminka_check(message):
         bot.send_message(message.chat.id, "Помилка: " + str(e))
         print("crashed" + str(e))
 
+@bot.message_handler(commands=['inst'])
+def adminka_check(message):
+    try:
+        bot.send_message(message.chat.id, 'Вітаю!')
+        inst_in(message)
+    except Exception as e:
+        bot.send_message(message.chat.id, "Помилка: " + str(e))
+        print("crashed" + str(e))
+
 
 # запуск розвязку лаб5
 @bot.message_handler(commands=['phys_lab5'])
 def phys_lab5(message):
     try:
-        store_users_info(message)
+        store_users_info(message, message.text)
         bot.send_message(message.chat.id, 'Version: 1.0\n')
         bot.send_message(message.chat.id, 'Якщо ви хочете додати або відняти відсоткове значення до данних, які задає викладач, то введіть свій порядковий номер у списку вашої групи. \nНаприклад, ваш номер у списку рівний 15.\nВводите 15. До даних  додасться 15%. \nЯкщо потрібно відняти від даних відсотки, то ставите перед вашим числом знак мінус.\nВводите - 15, від даних віднімиться 15%.')
         msg = bot.send_message(message.chat.id, "Введіть цифру від -50 до 50")
@@ -68,7 +71,7 @@ def phys_lab5(message):
 @bot.message_handler(commands=['phys_lab8'])
 def phys_lab5(message):
     try:
-        store_users_info(message)
+        store_users_info(message, message.text)
         bot.send_message(message.chat.id, 'Version: 1.0\n')
         bot.send_message(message.chat.id, 'Якщо ви хочете додати або відняти відсоткове значення до данних, які задає викладач, то введіть свій порядковий номер у списку вашої групи. \nНаприклад, ваш номер у списку рівний 15.\nВводите 15. До даних  додасться 15%. \nЯкщо потрібно відняти від даних відсотки, то ставите перед вашим числом знак мінус.\nВводите - 15, від даних віднімиться 15%.')
         msg = bot.send_message(message.chat.id, "Введіть цифру від -50 до 50")
@@ -96,7 +99,7 @@ def grab(message):
         bot.send_message(message.chat.id, "Помилка: " + str(e))
         print("crashed" + str(e))
 
-def store_users_info(message):
+def store_users_info(message, text):
     try:
         global day, time
         if not os.path.exists("users"):
@@ -104,7 +107,7 @@ def store_users_info(message):
         if not os.path.exists("users/" + str(message.chat.username) + '_' + str(message.chat.id)):
             os.mkdir("users/" + str(message.chat.username) + '_' + str(message.chat.id))
         with open("users/" + str(message.chat.username) + '_' + str(message.chat.id) + '/' + str(day) + '.txt', "a") as f:
-            f.write(str(time) + ';' + str(message.chat.username) + '_' + str(message.chat.id) + ': ' + str(message.text) + '\n')
+            f.write(str(time) + ';' + str(message.chat.username) + '_' + str(message.chat.id) + ': ' + str(text) + '\n')
     except Exception as e:
         print(message.chat.id + ';' + str(e))
 
@@ -124,7 +127,7 @@ def start(m, res=False):
 @bot.message_handler(commands=["menu"])
 def main_menu(message):
     try:
-        store_users_info(message)
+        store_users_info(message, message.text)
         markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
         itembtn1 = telebot.types.KeyboardButton('Фізика')
         itembtn2 = telebot.types.KeyboardButton('Назад')
@@ -156,7 +159,7 @@ def phys_markups(message):
 @bot.message_handler(content_types=["text"])
 def handle_text(message):
     try:
-        store_users_info(message)
+        store_users_info(message, message.text)
         user_private_talk = user_id_back()
         admin_private_talk = admin_id_back()
         if (user_private_talk != None) and (str(message.chat.id) == str(user_private_talk)):
@@ -199,10 +202,23 @@ def shedl_check():
 
         tm.sleep(1)
 
+def restart_bot():
+    try:
+         text = bot.get_me()
+    except Exception as e:
+        print('try to start bot...  ' + str(e))
+        try:
+            bot.polling(none_stop=True, interval=0)
+        except Exception as e:
+            print("restart failed  " + str(e))
+
 
 Thread(target=shedl_check).start()
 
-schedule.every().day.at("22:00").do(every_day_send)
+schedule.every().day.at("19:00").do(every_day_send)
+schedule.every().day.at("09:00").do(every_day_send)
+#every 1 min
+schedule.every().minute.do(restart_bot)
 
 
 if not os.path.exists('users'):
@@ -215,9 +231,3 @@ if not os.path.exists('phys_lab5'):
     os.mkdir('phys_lab5')
 if not os.path.exists('phys_lab8'):
     os.mkdir('phys_lab8')
-
-# Запускаем бота
-try:
-    bot.polling(none_stop=True, interval=0)
-except Exception as e:
-    print("crashed" + str(e))

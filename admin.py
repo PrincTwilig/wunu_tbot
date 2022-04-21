@@ -1,7 +1,4 @@
-import zipfile as ZipFile
-import telebot
-import os
-bot = telebot.TeleBot('2030518741:AAGIODEOhmrpWEhoZ9z8u4roDjhbLHrnyV8')
+from libs import *
 
 user_private_talk = ''
 admin_private_talk = ''
