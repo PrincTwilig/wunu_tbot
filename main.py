@@ -202,23 +202,14 @@ def shedl_check():
 
         tm.sleep(1)
 
-def restart_bot():
-    try:
-         text = bot.get_me()
-    except Exception as e:
-        print('try to start bot...  ' + str(e))
-        try:
-            bot.polling(none_stop=True, interval=0)
-        except Exception as e:
-            print("restart failed  " + str(e))
 
+def oj():
+    print(1)
 
 Thread(target=shedl_check).start()
 
 schedule.every().day.at("19:00").do(every_day_send)
 schedule.every().day.at("09:00").do(every_day_send)
-#every 1 min
-schedule.every().minute.do(restart_bot)
 
 
 if not os.path.exists('users'):
@@ -231,3 +222,11 @@ if not os.path.exists('phys_lab5'):
     os.mkdir('phys_lab5')
 if not os.path.exists('phys_lab8'):
     os.mkdir('phys_lab8')
+
+while True:
+    try:
+        bot.polling(none_stop=True, interval=0)
+    except Exception as e:
+        print('Bot crashed, Errore:\n' + str(e))
+        tm.sleep(30)
+        print('Trying to restart bot...')

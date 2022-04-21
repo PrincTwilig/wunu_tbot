@@ -29,7 +29,7 @@ def random_in(message):
         if message.text == 'Назад':
             inst_in(message)
             return 0
-        if message.text.split(' ')[0].isdigit() and message.text.split(' ')[1].isdigit():
+        try:
             min = int(message.text.split(' ')[0])
             max = int(message.text.split(' ')[1])
             if min > max:
@@ -37,13 +37,12 @@ def random_in(message):
                 random_start(message)
             else:
                 random_out(message, min, max)
-        else:
+        except:
             bot.send_message(message.chat.id, 'Невірні дані')
             random_start(message)
     except Exception as e:
         bot.reply_to(message, 'Помилка: ' + str(e))
         print(str(e))
-    inst_in(message)
 
 
 def random_out(message, min, max):
