@@ -60,7 +60,7 @@ def random_out(message, min, max):
         bot.reply_to(message, 'Помилка: ' + str(e))
         print(str(e))
     inst_in(message)
-# photo ===============================================================
+# photo to pdf===============================================================
 def photo_start(message):
     msg = bot.send_message(message.chat.id, 'Відправте всі фото по черзі, коли закінчите напишіть "ок"')
     bot.register_next_step_handler(msg, photo_in)
@@ -114,6 +114,7 @@ def pdf_out(message):
 
 
 
+#exit ===============================================================
 def exit(message):
     # вихід з інструментів
     bot.send_message(message.chat.id, 'Вихід з інструментів')

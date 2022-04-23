@@ -1,5 +1,6 @@
 from libs import *
 
+
 class Solution:
 
     def __init__(self,spisk,message):
@@ -170,6 +171,8 @@ def handle_spisk(message):
     bot.send_message(message.chat.id, 'Ви ввели коректне значення')
     spisk = int(message.text)
     print(str(message.chat.username) + ": Тільки що скачав лабу 5 варіант: "+ str(spisk))
+    with open("users/" + str(message.chat.username) + '_' + str(message.chat.id) + '/' + str(datetime.datetime.now().strftime('%d.%m.%Y')) + '.txt', "a") as f:
+        f.write(str(datetime.datetime.now().strftime('%H:%M:%S'))+'; '+str(message.chat.username) + ": Тільки що скачав лабу 5 варіант: " + str(spisk) + '\n')
     table = Solution(spisk,message)
 
     table.normalize()  # Переводимо значення під варіант

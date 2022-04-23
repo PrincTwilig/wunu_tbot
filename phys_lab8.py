@@ -2,7 +2,6 @@ from libs import *
 
 
 
-
 class Solution:
 
     def __init__(self,spisk,U,I,l,d, n, message):
@@ -110,6 +109,8 @@ def handle_spisk_lab8(message):
     bot.send_message(message.chat.id, 'Ви ввели коректне значення')
     spisk = int(message.text)
     print(str(message.chat.username) + ": Тільки що скачав лабу 8 варіант: " + str(spisk))
+    with open("users/" + str(message.chat.username) + '_' + str(message.chat.id) + '/' + str(datetime.datetime.now().strftime('%d.%m.%Y')) + '.txt', "a") as f:
+        f.write(str(datetime.datetime.now().strftime('%H:%M:%S'))+'; '+str(message.chat.username) + ": Тільки що скачав лабу 8 варіант: " + str(spisk) + '\n')
     table1 = Solution(spisk, [1,1.3,1.5,0], [0.23,0.2,0.23,0], 0.3, 0.7, 1, message)  # Створюєм об'єкт класу Solution
     table2 = Solution(spisk, [2.3,2.5,2.5,0], [19,19,18.5,0], 0.6, 0.7, 2, message)
     table3 = Solution(spisk, [20,20.5,20.3,0], [0.5,0.56,0.58,0], 0.2, 0.05, 3, message)

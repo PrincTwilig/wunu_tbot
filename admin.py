@@ -53,7 +53,7 @@ def admin_talk_with_user_send(message):
             user_private_talk = None
             adminka(message)
             return 0
-        print(str(message.chat.username) + ": Тільки що відправив повідомлення користувачу " + user_private_talk + ": " + message.text)
+        print(str(message.chat.username) + ": Тільки що відправив повідомлення користувачу " + str(user_private_talk) + ": " + str(message.text))
         bot.send_message(user_private_talk, message.text)
         msg = bot.send_message(message.chat.id, 'Введіть повідомлення:')
         bot.register_next_step_handler(msg, admin_talk_with_user_send)
@@ -64,15 +64,17 @@ def admin_send_message(message):
     try:
         if message.text == 'Назад':
             adminka(message)
+            return 0
         print(str(message.chat.username) + ": Тільки що відправив повідомлення всім користувачам: " + message.text)
-        users = open('users.txt', 'r').read().split((';'))
-        users = list(filter(lambda x: x.isdigit(), users))
+        users = open('users/users.txt', 'r').read().split(('\n'))
+        for i in range(len(users)):
+            users[i] = users[i].split(';')
         for user in users:
             try:
-                print(str(user) + ' ' + message.text)
-                bot.send_message(user, message.text)
+                print(str(user[1]) + ' ' + message.text)
+                bot.send_message(user[1], message.text)
             except Exception as e:
-                print(str(user) + " blocked, Errore\n" + str(e))
+                print(str(user[1]) + " blocked, Errore\n" + str(e))
         bot.send_message(message.chat.id, 'Повідомлення відправлено')
     except Exception as e:
         bot.reply_to(message, 'Помилка: ' + str(e))
@@ -94,14 +96,11 @@ def admin_download(message):
 def admin_download_chats(message):
     try:
         if os.path.exists('users'):
-            # open zip file
             zip = ZipFile.ZipFile("users.zip", 'w')
-            # walk through the folder
             for root, dirs, files in os.walk("users"):
                 for file in files:
                     zip.write(os.path.join(root, file))
             zip.close()
-            # send users.zip
             bot.send_document(message.chat.id, open('users.zip', 'rb'))
         else:
             bot.send_message(message.chat.id, "No one send anything(")

@@ -1,4 +1,6 @@
+from private import firebaseConfig, BotToken
 import os
+import pyrebase
 import telebot
 from PIL import Image
 import random
@@ -9,4 +11,6 @@ import datetime
 from prettytable import PrettyTable
 import matplotlib.pyplot as plt
 import zipfile as ZipFile
-bot = telebot.TeleBot('2030518741:AAGIODEOhmrpWEhoZ9z8u4roDjhbLHrnyV8')
+bot = telebot.TeleBot(BotToken)
+firebase = pyrebase.initialize_app(firebaseConfig)
+storage = firebase.storage()

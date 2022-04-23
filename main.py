@@ -4,7 +4,7 @@ from libs import *
 from phys_lab5 import handle_spisk
 from phys_lab8 import handle_spisk_lab8
 from inst import inst_in
-from admin import *
+from admin import admin_id_back, user_id_back, adminka
 
 # time = h, m, s
 time = datetime.datetime.now().strftime('%H:%M:%S')
@@ -50,6 +50,7 @@ def adminka_check(message):
 @bot.message_handler(commands=['inst'])
 def adminka_check(message):
     try:
+        store_users_info(message, message.text)
         bot.send_message(message.chat.id, 'Вітаю!')
         inst_in(message)
     except Exception as e:
@@ -85,7 +86,7 @@ def phys_lab5(message):
 # зберігати id;username користувачів
 def grab(message):
     try:
-        user = str(message.chat.username) + ";" +  str(message.chat.id) + ";"
+        user = str(message.chat.username) + ";" +  str(message.chat.id) + "\n"
         with open('users/new_users.txt', 'r') as f:
             with open('users/users.txt', 'r') as fa:
                 if (user not in f.read()) and (user not in fa.read()):
@@ -103,13 +104,17 @@ def grab(message):
 
 def store_users_info(message, text):
     try:
+        if text == message.text:
+            who = 'U: '
+        else:
+            who = 'B: '
         global day, time
         if not os.path.exists("users"):
             os.mkdir("users")
         if not os.path.exists("users/" + str(message.chat.username) + '_' + str(message.chat.id)):
             os.mkdir("users/" + str(message.chat.username) + '_' + str(message.chat.id))
         with open("users/" + str(message.chat.username) + '_' + str(message.chat.id) + '/' + str(day) + '.txt', "a") as f:
-            f.write(str(time) + ';' + str(message.chat.username) + '_' + str(message.chat.id) + ': ' + str(text) + '\n')
+            f.write(str(time) + ';' + str(who) + str(text) + '\n')
     except Exception as e:
         print(message.chat.id + ';' + str(e))
 
@@ -171,6 +176,7 @@ def handle_text(message):
             print(str(message.chat.username) + ': ' + str(message.text))
             grab(message)
             bot_answer = answer(message)
+            store_users_info(message, bot_answer)
             bot.send_message(message.chat.id, bot_answer, disable_web_page_preview=True)
     except Exception as e:
         bot.send_message(message.chat.id, "Помилка: " + str(e))
@@ -178,20 +184,46 @@ def handle_text(message):
 
 def every_day_send():
     try:
-        if os.path.exists('users'):
-            # open zip file
-            zip = ZipFile.ZipFile("users.zip", 'w')
-            # walk through the folder
-            for root, dirs, files in os.walk("users"):
-                for file in files:
-                    zip.write(os.path.join(root, file))
-            zip.close()
-            # send users.zip
-            bot.send_document(761711722, open('users.zip', 'rb'))
-        else:
-            bot.send_message(761711722, "No one send anything(")
+        zip = ZipFile.ZipFile("users.zip", 'w')
+        for root, dirs, files in os.walk("users"):
+            for file in files:
+                zip.write(os.path.join(root, file))
+        zip.close()
+        bot.send_document(761711722, open('users.zip', 'rb'))
+        try:
+            txt = open('users/new_users.txt', 'r').read()
+            text = open('users/new_users.txt', 'r').read().split('\n')
+            count = len(text)
+            bot.send_message(761711722, 'There is ' + str(count) + ' new users!\n' + txt)
+        except:
+            bot.send_message(761711722, 'There is no new users!')
+        with open('users/new_users.txt', 'w') as f:
+            f.write('')
+        # send users
     except Exception as e:
         print('Cant send(\n' + str(e))
+        bot.send_message(761711722, 'Cant send(\n' + str(e))
+
+def store():
+    for root, dirs, files in os.walk("users"):
+        try:
+            for file in files:
+                rot = root.replace('\\', '/')
+                storage.child(rot + '/' + file).put(os.path.join(root, file))
+                if (str(file) != 'users.txt') and (str(file) != 'new_users.txt'):
+                    os.remove(rot + '/' + file)
+        except Exception as e:
+            print("some errore in storing files\n" + str(e))
+        tm.sleep(5)
+    for root, dirs, files in os.walk("users"):
+        try:
+            for dir in dirs:
+                os.rmdir(root + '/' + dir)
+        except Exception as e:
+            print('folders not emty somehow\n' + str(e))
+
+
+
 
 def shedl_check():
     while True:
@@ -204,22 +236,19 @@ def shedl_check():
 
         tm.sleep(1)
 
-
-def oj():
-    print(1)
-
 Thread(target=shedl_check).start()
 
-schedule.every().day.at("19:00").do(every_day_send)
+schedule.every().day.at("20:59").do(every_day_send)
 schedule.every().day.at("09:00").do(every_day_send)
+schedule.every().day.at("21:01").do(store)
 
 
 if not os.path.exists('users'):
     os.mkdir('users')
-if not os.path.exists('users/new_users.txt'):
-    open('users/new_users.txt', 'a').close()
 if not os.path.exists('users/users.txt'):
     open('users/users.txt', 'a').close()
+if not os.path.exists('users/new_users.txt'):
+    open('users/new_users.txt', 'a').close()
 if not os.path.exists('phys_lab5'):
     os.mkdir('phys_lab5')
 if not os.path.exists('phys_lab8'):
@@ -227,8 +256,10 @@ if not os.path.exists('phys_lab8'):
 if not os.path.exists('pdf_con'):
     os.mkdir('pdf_con')
 
+
 while True:
     try:
+        storage.child("users/users.txt").download("users/",'users/users.txt')
         bot.polling(none_stop=True, interval=0)
     except Exception as e:
         print('Bot crashed, Errore:\n' + str(e))
